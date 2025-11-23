@@ -1,7 +1,7 @@
 [project]
-name = "cypris-test"
+name = "xml-parser-test"
 version = "0.1.0"
-description = "Add your description here"
+description = "Data Engineering Test Project"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
