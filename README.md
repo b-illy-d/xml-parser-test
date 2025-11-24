@@ -4,15 +4,14 @@
 
 From the repo root:
 
-Install dependecies:
+1. Install dependecies:
 
 ```
 uv sync
-uv pip install -e .
 source .venv/bin/activate
 ```
 
-Run the program with the `parser` script:
+2. Run the program with the `parser` script:
 
 ```
 usage: parser [-h] [-f PATH | -u URL | -s]
@@ -23,6 +22,9 @@ options:
   -u URL, --url URL     Read XML from a public Google Cloud Storage URL.
   -s, --stdin           Explicitly read XML from stdin (default when no other source is provided).
 ```
+
+Of course, you could save yourself some keystrokes and just run `uv run parser <OPTIONS>` and then
+`uv` will install all the dependecies before running the script.
 
 ## Problem statement
 
