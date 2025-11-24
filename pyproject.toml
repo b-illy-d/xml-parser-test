@@ -13,4 +13,5 @@ dev = [
     "pytest>=9.0.1",
     "pytest-watcher>=0.4.3",
     "ruff>=0.14.4",
+    "types-lxml>=2025.8.25",
 ]

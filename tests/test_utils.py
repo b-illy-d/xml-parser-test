@@ -3,6 +3,16 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[0]
 _EXAMPLE_XML_FILE_PATH = os.path.join(ROOT, "assets", "example.xml")
+_MALFORMED_XML_FILE_PATH = os.path.join(ROOT, "assets", "example_malformed.xml")
+_MULTIPLE_APPLICATION_REFERENCES_XML_FILE_PATH = os.path.join(
+    ROOT, "assets", "example_multiple_application_refs.xml"
+)
+_MULTIPLE_DOC_NUMBERS_XML_FILE_PATH = os.path.join(
+    ROOT, "assets", "example_multiple_doc_numbers.xml"
+)
+_NO_ATTRIBUTES_XML_FILE_PATH = os.path.join(ROOT, "assets", "example_no_attributes.xml")
+_UNSORTED_XML_FILE_PATH = os.path.join(ROOT, "assets", "example_unsorted.xml")
+_WEIRD_PLACES_XML_FILE_PATH = os.path.join(ROOT, "assets", "example_weird_places.xml")
 
 
 def get_example_filepath():
@@ -10,12 +20,40 @@ def get_example_filepath():
     return _EXAMPLE_XML_FILE_PATH if os.path.exists(_EXAMPLE_XML_FILE_PATH) else None
 
 
-def read_example_xml():
+def read_example_xml(filepath: str | None = None):
     """Read the example XML file and return its content."""
-    example_path = get_example_filepath()
+    example_path = get_example_filepath() if filepath is None else filepath
     if example_path is None:
         raise FileNotFoundError("Example XML file not found.")
     return open(example_path, "rb")
+
+
+def read_extra_tags_xml():
+    return read_example_xml(_WEIRD_PLACES_XML_FILE_PATH)
+
+
+def read_malformed_xml():
+    return read_example_xml(_MALFORMED_XML_FILE_PATH)
+
+
+def read_multiple_application_references_xml():
+    return read_example_xml(_MULTIPLE_APPLICATION_REFERENCES_XML_FILE_PATH)
+
+
+def read_multiple_doc_numbers_xml():
+    return read_example_xml(_MULTIPLE_DOC_NUMBERS_XML_FILE_PATH)
+
+
+def read_no_attributes_xml():
+    return read_example_xml(_NO_ATTRIBUTES_XML_FILE_PATH)
+
+
+def read_unsorted_xml():
+    return read_example_xml(_UNSORTED_XML_FILE_PATH)
+
+
+def read_weird_places_xml():
+    return read_example_xml(_WEIRD_PLACES_XML_FILE_PATH)
 
 
 def compare_streams_ignore_whitespace(stream1, stream2) -> bool:

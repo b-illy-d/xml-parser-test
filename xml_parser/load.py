@@ -3,25 +3,17 @@ import sys
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
-from .types import _PathLike, _StreamLike
+from .types import StreamLike
 
 _GCS_HTTP_BASE = "https://storage.googleapis.com"
 
 
-def _normalize_stream(stream: _StreamLike | None) -> _StreamLike:
-    if stream is None:
-        raise ValueError("A stream must be provided")
-    buffer_stream = getattr(stream, "buffer", None)
-    return buffer_stream if buffer_stream is not None else stream
+def read_stdin() -> StreamLike:
+    """Read XML data from stdin and return the parser."""
+    return sys.stdin.buffer
 
 
-def read_stdin(stream: _StreamLike | None = None) -> _StreamLike:
-    """Read XML data from stdin (or a provided stream) and return the parser."""
-    active_stream = _normalize_stream(stream if stream is not None else sys.stdin)
-    return active_stream
-
-
-def read_file(path: _PathLike) -> _StreamLike:
+def read_file(path: str) -> StreamLike:
     """Read XML data from a local file path and return the parser."""
     file_path = os.fspath(path)
     if not os.path.exists(file_path):
@@ -38,20 +30,11 @@ def _normalize_gcs_url(url: str) -> str:
     parsed = urlparse(url)
     if parsed.scheme in {"http", "https"}:
         return url
-    if parsed.scheme != "gs":
-        raise ValueError(f"Unsupported scheme for GCS url: {url}")
-    if not parsed.netloc or not parsed.path:
-        raise ValueError(f"Malformed GCS url: {url}")
-    object_path = parsed.path.lstrip("/")
-    compiled = f"{_GCS_HTTP_BASE}/{parsed.netloc}/{object_path}"
-    if parsed.query:
-        compiled = f"{compiled}?{parsed.query}"
-    if parsed.fragment:
-        compiled = f"{compiled}#{parsed.fragment}"
-    return compiled
+    """TODO: Support gs:// scheme if needed in the future."""
+    raise ValueError(f"Unsupported scheme for GCS url: {url}")
 
 
-def read_gcs(url: str) -> _StreamLike:
+def read_gcs(url: str) -> StreamLike:
     """Read XML data from a public Google Cloud Storage URL."""
     normalized_url = _normalize_gcs_url(url)
     try:

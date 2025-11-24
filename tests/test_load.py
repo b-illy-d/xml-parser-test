@@ -1,4 +1,5 @@
 import io
+import sys
 
 from xml_parser.load import _GCS_HTTP_BASE, read_file, read_gcs, read_stdin
 
@@ -27,10 +28,16 @@ def test_read_gcs_not_found():
         assert False, "Expected error was not raised"
 
 
-def test_read_stdin():
-    test_input = "<root><child>Test</child></root>"
-    stream = io.StringIO(test_input)
-    result_stream = read_stdin(stream)
+def test_read_stdin(monkeypatch):
+    test_input = b"<root><child>Test</child></root>"
+
+    class FakeStdin:
+        def __init__(self, data: bytes):
+            self.buffer = io.BytesIO(data)
+
+    monkeypatch.setattr(sys, "stdin", FakeStdin(test_input))
+
+    result_stream = read_stdin()
     assert result_stream.read() == test_input
 
 

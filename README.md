@@ -34,6 +34,7 @@ I'm writing my code under the following assumptions:
 
   - the `root` element MAY have one or more `application-reference` element(s) as children
   - an `application-reference` element MAY have one or more `document-id` element(s) as children
+  - a `document-id` MUST appear as a child of an `application-reference` element
   - a `document-id` element MAY have one or more `doc-number` element(s) as children
   - a `document-id` element MAY have EITHER a `format="epo"` attribute OR a `load-source="patent-office"` attribute
 
