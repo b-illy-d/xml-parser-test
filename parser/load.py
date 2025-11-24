@@ -16,13 +16,10 @@ def read_stdin() -> StreamLike:
 def read_file(path: str) -> StreamLike:
     """Read XML data from a local file path and return the parser."""
     file_path = os.fspath(path)
-    if not os.path.exists(file_path):
-        raise FileNotFoundError(file_path)
+    if file_path is None or not os.path.exists(file_path):
+        raise FileNotFoundError(f"File not found: {file_path}")
     if not os.path.isfile(file_path):
-        raise IsADirectoryError(file_path)
-
-    if file_path is None:
-        raise FileNotFoundError("Example XML file not found.")
+        raise IsADirectoryError(f"File path is a directory: {file_path}")
     return open(file_path, "rb")
 
 
@@ -43,5 +40,4 @@ def read_gcs(url: str) -> StreamLike:
         raise ValueError(f"Invalid URL {normalized_url}: {e}")
     except Exception as e:
         raise Exception(f"Unexpected error while reading GCS URL {normalized_url}: {e}")
-
     return response
