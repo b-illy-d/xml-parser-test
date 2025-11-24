@@ -71,8 +71,8 @@ def parse_stream(
         print(f"XML Parsing error, some entries may be missing: {e}")
         return _flatten(doc_numbers_by_source)
     except Exception as e:
-        e.args = (f"Error while parsing XML: {e}",)
-        raise e
+        print(f"Error while parsing XML: {e}")
+        return _flatten(doc_numbers_by_source)
     finally:
         with suppress(Exception):
             source.close()

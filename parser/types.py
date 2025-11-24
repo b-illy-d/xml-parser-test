@@ -1,3 +1,7 @@
-from typing import IO
+from typing import Protocol, runtime_checkable
 
-StreamLike = IO[bytes]
+
+@runtime_checkable
+class StreamLike(Protocol):
+    def read(self, *args, **kwargs) -> bytes: ...
+    def close(self) -> None: ...

@@ -1,7 +1,5 @@
 import io
 
-import pytest
-
 from parser.parse import etree, parse_stream
 from tests.test_utils import (
     read_example_xml,
@@ -121,9 +119,21 @@ def test_unexpected_error(monkeypatch):
         "parser.parse.etree.iterparse",
         error_gen,
     )
-    with pytest.raises(ValueError) as e:
-        source = read_example_xml()
-        parse_stream(source)  # propagate unexpected ValueError
+    source = read_example_xml()
+    result = parse_stream(source)  # handle ParseError in parse_stream
+    assert len(result) == 0
+    assert result == []
 
-    assert "Error while parsing XML" in str(e)
-    assert "Simulated unexpected error" in str(e)
+
+def test_stream_error():
+    class FaultyStream:
+        def read(self, *args, **kwargs):
+            raise IOError("Simulated stream read error")
+
+        def close(self):
+            pass
+
+    source = FaultyStream()
+    result = parse_stream(source)  # handle stream error in parse_stream
+    assert len(result) == 0
+    assert result == []
