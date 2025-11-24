@@ -61,8 +61,12 @@ def parse_stream(
                     if index >= 0:
                         doc_numbers_by_source[index].append(value)
                     element.clear(keep_tail=True)
-                case ("end", _):
+
+            match event:
+                case "start" if not in_application_reference:
                     element.clear(keep_tail=True)
+                case "end":
+                    element.clear()
     finally:
         with suppress(Exception):
             source.close()
