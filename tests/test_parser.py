@@ -1,6 +1,8 @@
 import io
 
-from parser.parse import parse_stream
+import pytest
+
+from parser.parse import etree, parse_stream
 from tests.test_utils import (
     read_example_xml,
     read_malformed_xml,
@@ -87,3 +89,41 @@ def test_extra_tags():
 
     assert len(result) == 2
     assert result == _EXPECTED_DOC_NUMBERS
+
+
+def test_parsing_error(monkeypatch):
+    def error_gen(*args, **kwargs):
+        def gen():
+            raise etree.ParseError("Simulated parsing error", 999, 1, 1)
+            yield
+
+        return gen()
+
+    monkeypatch.setattr(
+        "parser.parse.etree.iterparse",
+        error_gen,
+    )
+    source = read_example_xml()
+    result = parse_stream(source)  # handle ParseError in parse_stream
+    assert len(result) == 0
+    assert result == []
+
+
+def test_unexpected_error(monkeypatch):
+    def error_gen(*args, **kwargs):
+        def gen():
+            raise ValueError("Simulated unexpected error")
+            yield
+
+        return gen()
+
+    monkeypatch.setattr(
+        "parser.parse.etree.iterparse",
+        error_gen,
+    )
+    with pytest.raises(ValueError) as e:
+        source = read_example_xml()
+        parse_stream(source)  # propagate unexpected ValueError
+
+    assert "Error while parsing XML" in str(e)
+    assert "Simulated unexpected error" in str(e)

@@ -9,7 +9,7 @@ from lxml import etree
 from .types import StreamLike
 
 
-# These tests receive the <doc-number> element and return True if it matches the source
+# These receive the <doc-number> element and return True if it matches the source
 def _is_epo(element: etree.Element) -> bool:
     doc_id = element.getparent()
     if doc_id is None:
@@ -67,6 +67,12 @@ def parse_stream(
                     element.clear(keep_tail=True)
                 case "end":
                     element.clear()
+    except etree.ParseError as e:
+        print(f"XML Parsing error, some entries may be missing: {e}")
+        return _flatten(doc_numbers_by_source)
+    except Exception as e:
+        e.args = (f"Error while parsing XML: {e}",)
+        raise e
     finally:
         with suppress(Exception):
             source.close()
