@@ -15,3 +15,6 @@ dev = [
     "ruff>=0.14.4",
     "types-lxml>=2025.8.25",
 ]
+
+[project.scripts]
+parser = "parser.main:main"
