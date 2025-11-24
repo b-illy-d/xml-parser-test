@@ -24,5 +24,7 @@
       <lang>EN</lang>
     </document-id>
   </application-reference>
+  <doc-number>do_not_include_123456789</doc-number>
+  <doc-number>do_not_include_98765432</doc-number>
 </root>
 

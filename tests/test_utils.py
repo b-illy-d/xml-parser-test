@@ -22,10 +22,10 @@ def get_example_filepath():
 
 def read_example_xml(filepath: str | None = None):
     """Read the example XML file and return its content."""
-    example_path = get_example_filepath() if filepath is None else filepath
-    if example_path is None:
+    path = get_example_filepath() if filepath is None else filepath
+    if path is None:
         raise FileNotFoundError("Example XML file not found.")
-    return open(example_path, "rb")
+    return open(path, "rb")
 
 
 def read_extra_tags_xml():
