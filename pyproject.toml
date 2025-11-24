@@ -1,5 +1,5 @@
 [project]
-name = "xml-parser-test"
+name = "xml_parser"
 version = "0.1.0"
 description = "Data Engineering Test Project"
 readme = "README.md"
@@ -11,5 +11,6 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest>=9.0.1",
+    "pytest-watcher>=0.4.3",
     "ruff>=0.14.4",
 ]
