@@ -4,9 +4,15 @@
 
 From the repo root:
 
-Install dependecies with `uv sync`
+Install dependecies:
 
-Run the program with `uv python -m parser.main [OPTIONS]`:
+```
+uv sync
+uv pip install -e .
+source .venv/bin/activate
+```
+
+Run the program with the `parser` script:
 
 ```
 usage: parser [-h] [-f PATH | -u URL | -s]
@@ -44,6 +50,9 @@ I'm writing my code under the following assumptions:
   - the `root` element MAY have one or more `application-reference` element(s) as children
   - an `application-reference` element MAY have one or more `document-id` element(s) as children
   - a `document-id` MUST appear as a child of an `application-reference` element
+    - therefore I can just ignore any child of the `root` that isn't `application-reference`
   - a `document-id` element MAY have one or more `doc-number` element(s) as children
+    - all such elements should be collected
   - a `document-id` element MAY have EITHER a `format="epo"` attribute OR a `load-source="patent-office"` attribute
+    - a `document-id` element without either of these will be ignored
 
