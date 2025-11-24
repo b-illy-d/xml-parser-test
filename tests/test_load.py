@@ -1,7 +1,7 @@
 import io
 import sys
 
-from xml_parser.load import _GCS_HTTP_BASE, read_file, read_gcs, read_stdin
+from parser.load import _GCS_HTTP_BASE, read_file, read_gcs, read_stdin
 
 from .test_utils import (
     compare_streams_ignore_whitespace,

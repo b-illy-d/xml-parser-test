@@ -1,5 +1,6 @@
 import io
 
+from parser.parse import parse_stream
 from tests.test_utils import (
     read_example_xml,
     read_malformed_xml,
@@ -8,7 +9,6 @@ from tests.test_utils import (
     read_unsorted_xml,
     read_weird_places_xml,
 )
-from xml_parser.parse import parse_stream
 
 _EXPECTED_DOC_NUMBERS = ["999000888", "66667777"]
 

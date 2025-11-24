@@ -1,5 +1,5 @@
 [project]
-name = "xml_parser"
+name = "parser"
 version = "0.1.0"
 description = "Data Engineering Test Project"
 readme = "README.md"

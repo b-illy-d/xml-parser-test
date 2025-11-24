@@ -4,9 +4,18 @@
 
 From the repo root:
 
-```python
-uv sync
-uv run parse
+Install dependecies with `uv sync`
+
+Run the program with `uv python -m parser.main [OPTIONS]`:
+
+```
+usage: parser [-h] [-f PATH | -u URL | -s]
+
+options:
+  -h, --help            show this help message and exit
+  -f PATH, --file PATH  Read XML from a local file path.
+  -u URL, --url URL     Read XML from a public Google Cloud Storage URL.
+  -s, --stdin           Explicitly read XML from stdin (default when no other source is provided).
 ```
 
 ## Problem statement
