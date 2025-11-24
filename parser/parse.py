@@ -47,25 +47,22 @@ def parse_stream(
         in_application_reference = False
         in_document_id = False
         for event, element in parser:
-            if event == "start":
-                match element.tag:
-                    case "application-reference":
-                        in_application_reference = True
-                    case "document-id" if in_application_reference:
-                        in_document_id = True
-            elif event == "end":
-                match element.tag:
-                    case "application-reference":
-                        in_application_reference = False
-                    case "document-id":
-                        in_document_id = False
-                    case "doc-number" if in_document_id:
-                        index, value = _handle(element)
-                        if index >= 0:
-                            doc_numbers_by_source[index].append(value)
-                        element.clear(keep_tail=True)
-                    case _:
-                        element.clear(keep_tail=True)
+            match (event, element.tag):
+                case ("start", "application-reference"):
+                    in_application_reference = True
+                case ("end", "application-reference"):
+                    in_application_reference = False
+                case ("start", "document-id") if in_application_reference:
+                    in_document_id = True
+                case ("end", "document-id"):
+                    in_document_id = False
+                case ("end", "doc-number") if in_document_id:
+                    index, value = _handle(element)
+                    if index >= 0:
+                        doc_numbers_by_source[index].append(value)
+                    element.clear(keep_tail=True)
+                case ("end", _):
+                    element.clear(keep_tail=True)
     finally:
         with suppress(Exception):
             source.close()
